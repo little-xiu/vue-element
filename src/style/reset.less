@@ -1,0 +1,26 @@
+@import './variables.less';
+@import './rem.less';
+@import './mixin.less';
+html {
+  background: #fff;
+  font-family: @font-family-default;
+}
+
+.wrap {
+  overflow: hidden;
+  height: 100%;
+  li {
+    float: left;
+    width: 79/@FontBase;
+    height: 79/@FontBase;
+    margin-right: 40/@FontBase;
+    border: 1/@FontBase solid #eee;
+    box-sizing: border-box;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+  }
+}

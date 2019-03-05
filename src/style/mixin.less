@@ -1,0 +1,63 @@
+@import './variables.less';
+.mx-fc(@size, @color) {
+  font-size: @size;
+  color: @color;
+}
+.mx-bd-bottom(@num, @color) {
+  border-bottom: @num solid @color;
+}
+// 多行文本显示省略号,@num用于显示的行数
+.mx-more-ellipsis(@num) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: @num;
+  -webkit-box-orient: vertical;
+}
+// 单行文本显示省略号
+.mx-single-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+// 1像素边框
+.border-1px(@color) {
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-bottom: 1px solid @color;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
+}
+// ios滚动流畅,使用具有回弹效果的滚动, 当手指从触摸屏上移开，内容会继续保持一段时间的滚动效果。
+// 继续滚动的速度和持续的时间和滚动手势的强烈程度成正比。
+// 在移动端上，在你用overflow-y:scorll属性的时候，你会发现滚动的效果很木，很慢，
+// 这时候可以使用-webkit-overflow-scrolling:touch这个属性，让滚动条产生滚动回弹的效果，就像ios原生的滚动条一样流畅。
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+// 隐藏滚动条
+.scroll-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.container {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-text-size-adjust: none;
+}
+// 如果要用小于12px字体时，用-webkit-transform: scale( ) 缩小到合适值。

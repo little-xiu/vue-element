@@ -10,7 +10,18 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    // 配置代理实现跨域
+    proxyTable: {
+      // '/api': {
+      //   target: 'http://iqsz-d6687:8081', // 联调机
+      //   target: 'http://iqcd-d0587:8091', // 后端人电脑
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/api': '',
+      //   }
+      // },
+      '/tax/*': 'http://localhost:3000',// 本地mock服务器地址
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
