@@ -4,8 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 // 按需引入element
+// import 'element-ui/lib/theme-chalk/index.css';
 import './element';
 import '@/scss/reset.css';
+// 全局element样式修改，ManageTable文件动态绑定class .self-steps
+import '@/scss/customEle.css';
+
+
 import store from './store';
 
 Vue.config.productionTip = false

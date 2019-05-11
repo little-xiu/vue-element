@@ -1,14 +1,20 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Home from '@/pages/Home';
-import Login from '@/pages/login';
-import ReportCenter from '@/view/ReportCenter';
-import appManger from '@/view/appManger';
-import deviceManger from '@/view/deviceManger';
-import TestTabs from '@/pages/testTabs/testTabs';
-import TestCase from '@/pages/components/TestCase';
-import TestDetail from '@/pages/components/testDetail';
-import ProblemDetail from '@/pages/probleDetail/ProblemDetail';
+import Router from 'vue-router';
+import { EWOULDBLOCK } from 'constants';
+// 按需加载模块
+const Home = () => import('@/pages/Home');
+const Login = () => import('@/pages/login');
+const ReportCenter = () => import('@/view/ReportCenter');
+const TestTabs = () => import('@/pages/testTabs/testTabs');
+const TestCase = () => import('@/pages/components/TestCase');
+const TestDetail = () => import('@/pages/components/testDetail');
+const ProblemDetail = () => import('@/pages/probleDetail/ProblemDetail');
+const ManCheck = () => import('@/pages/manCheck/manCheck');
+const Container = () => import('@/view/remoteDevice/container');
+const RemoteDevice = () => import('@/view/remoteDevice/remoteDevice');
+const CheckRecord = () => import('@/view/remoteDevice/checkRecord');
+const RemoteDetail = () => import('@/view/remoteDevice/remoteDetail');
+const Ebook = () => import('@/view/ebook/ebook');
 Vue.use(Router)
 
 const router = new Router({
@@ -22,17 +28,40 @@ const router = new Router({
         {
           path: 'appManger',
           name: 'appManger',
-          component: appManger,
+          component: () => import('@/view/appManger'),
         },
         {
-          path: 'deviceManger',
-          name: 'deviceManger',
-          component: deviceManger,
+          path: 'remote',
+          name: 'remote',
+          component: Container,
+          redirect: {name: 'remoteDevice'},
+          children: [
+            {
+              path: 'remoteDevice',
+              name: 'remoteDevice',
+              component: RemoteDevice,
+            },
+            {
+              path: 'checkRecord',
+              name: 'CheckRecord',
+              component: CheckRecord,
+            },
+            {
+              path: 'remoteDetail',
+              name: 'remoteDetail',
+              component: RemoteDetail,
+            },
+          ],
         },
         {
           path: 'reportCenter',
           name: 'reportCenter',
           component: ReportCenter,
+        },
+        {
+          path: 'ebook',
+          name: 'ebook',
+          component: Ebook,
         },
         {
           path: '/testtabs',
@@ -49,6 +78,11 @@ const router = new Router({
               path: 'detail',
               name: 'ReportCenter_Detail',
               component: TestDetail,
+            },
+            {
+              path: 'check',
+              name: 'ReportCenter_Check',
+              component: ManCheck,
             },
           ],
         },

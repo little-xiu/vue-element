@@ -1,0 +1,23 @@
+.self-steps .el-step .el-step__main {
+  position: absolute;
+  top: -5px;
+  left: 20px;
+}
+.self-steps .el-step:last-child .el-step__main {
+  left: 20px;
+}
+.self-steps .el-step.is-horizontal .el-step__line {
+  top: 15px;
+  left: 72px;
+  right: 23px;
+  height: 1px;
+}
+.self-steps .el-step__icon.is-text {
+  left: -126px;
+}
+.self-steps .el-step:last-of-type {
+  padding-right: 98px;
+}
+.self-steps .el-step:last-of-type .is-text {
+  left: -14px;
+}

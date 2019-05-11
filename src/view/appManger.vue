@@ -6,9 +6,11 @@
     </div>
     <div class="main-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane v-for="(item, index) in tabList" :key="index" :label="item.label" :name="item.name">
+        <el-tab-pane v-for="(item, index) in tabList" :key="index" :label="item.label" :name="item.name" >
           <manage-table 
             :dataSource="tableData"
+            :activeName="activeName"
+            :loadFlag="loadFlag"
           />
         </el-tab-pane>
       </el-tabs>
@@ -21,30 +23,31 @@
 import dialog from '@/components/uploadDialog'
 import detail from '@/components/detail'
 import ManageTable from '@/components/ManageTable'
+import http from '@/service/http';
 const tabData = [
   {
     label: '待启动',
-    name: 'first'
+    name: 'READY'
   },
   {
     label: '待审核',
-    name: 'second'
+    name: 'TO_CONFIRM'
   },
   {
     label: '审核中',
-    name: 'third'
+    name: 'CONFIRM'
   },
   {
     label: '进行中',
-    name: 'fourth'
+    name: 'DOING'
   },
   {
     label: '已完成',
-    name: 'fifth'
+    name: 'DONE'
   },
   {
     label: '全部',
-    name: 'sixth'
+    name: ''
   },
 ];
 export default {
@@ -52,40 +55,64 @@ export default {
     'modify-dialog': dialog,
     'manage-table': ManageTable,
     'app-detail': detail,
+    tabIndex: 0,
   },
   data () {
     return {
       detailVisible: false,
       modifyVisible: false,
       tabList: tabData,
-      activeName: 'first',
-      tableData: [{
-          name: 'HRX',
-          version: '安卓8.0',
-          startTime: '2016-05-03',
-          plat: 'xx',
-          status: 'DOING',
-          endTime: '2018-12-11',
-          id: 'aabb11',
-        }, {
-          name: 'HRX2',
-          version: '安卓8.3',
-          startTime: '2016-05-03',
-          plat: 'xx',
-          status: 'DONE',
-          endTime: '2018-12-11',
-          id: 'aabb22',
-        },
-      ]
+      activeName: 'DONE', // 全部的默认为5
+      userRight: JSON.parse(localStorage.getItem('userinfo')).code, // 用户权限
+      loadFlag: false,
+      tableData: [],
     }
   },
+  created() {
+    this.getData();
+  },
   methods: {
+    getData() {
+      const param = {
+        adminStatus: this.activeName.split(';'),
+      };
+      // if (this.userRight === 9) {
+      //   param.adminStatus = this.activeName === '5' ? '' : this.activeName;
+      // }
+      this.loadFlag = true;
+      http.post('/tax/ptc-web/apkinfo/find.do', param).then(res => {
+        this.loadFlag = false;
+        const list = res.data.list;
+        list.forEach(item => {
+          switch (item.status) {
+            case 'READY':
+              item.status = '待启动';
+              break;
+            case 'TO_CONFIRM':
+              item.status = '待审核';
+              break;
+            case 'CONFIRM':
+              item.status = '审核中';
+              break;
+            case 'DOING':
+              item.status = '进行中';
+              break;
+            case 'DONE':
+              item.status = '已完成';
+              break;
+            default:
+              break;
+          }
+        });
+        this.tableData = list;
+      });
+    },
     deleteRow(index, rows) {
       rows.splice(index, 1);
     },
     handleClick(tab, event) {
-      // console.log(tab, event);
-      // console.log(tab.index)
+      // this.tabIndex = tab.index;
+      this.getData();
     },
     uploadApp () {
       this.modifyVisible = true;

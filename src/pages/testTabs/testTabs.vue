@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <div class="tabs">
+    <div class="tabs" v-if="tabVisible">
       <router-link
         class="tab"
         :to="'/testtabs/profile?id=' + queryId"

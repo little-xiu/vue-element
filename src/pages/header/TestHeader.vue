@@ -19,7 +19,7 @@
     </div>
     <div class="router-style" v-if="!showBreadNav">
       <router-link to="/appManger">应用管理</router-link>
-      <router-link to="/deviceManger" v-show="code === 9">设备管理</router-link>
+      <router-link to="/remote" v-show="code === 9">远程真机</router-link>
       <router-link to="/reportCenter">报告中心</router-link>
     </div>
     <div class="router-style" v-if="showBreadNav">
@@ -41,7 +41,7 @@
 <script>
 import { mapState } from 'vuex';
 import http from '@/service/http';
-import { setTimeout } from 'timers';
+
 export default {
   name: 'TestHeader',
   data() {

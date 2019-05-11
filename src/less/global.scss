@@ -1,0 +1,101 @@
+// 1rem = fontSize px;
+// 1px = (1 / fontSize)rem;
+// $fontSize: 37.5;
+$fontSize: 50;
+@function px2rem ($px) {
+  @return ($px / $fontSize) + rem;
+}
+//选择器中使用则继承这些样式： @include center;
+@mixin center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  font-size: px2rem(20);
+}
+// <transition name="slide-up"><div class="foot-wrapper" v-show="isShow">
+.foot-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  width: 100%;
+  height: px2rem(48);
+  // 盒子上方阴影
+  box-shadow: 0 px2rem(-8) px2rem(8) rgba(0, 0, 0, .15);
+  &.slide-up-enter, &.slide-up-leave-to {
+    transform: translate3d(0, 100%, 0);
+  }
+  &.slide-up-enter-to, &.slide-up-leave {
+    transform: translate3d(0, 0, 0);
+  }
+  &.slide-up-enter-active, &.slide-up-leave-active {
+    transition: all .3s linear;
+  }
+}
+.slide-down-enter, .slide-down-leave-to {
+  transform: translateY(-100%);
+}
+.slide-down-enter-to, .slide-down-leave {
+  transform: translateY(0);
+}
+.slide-down-enter-active, .slide-down-leave-active {
+  transition: all .5s linear;
+}
+.slide-up-enter, .slide-up-leave-to {
+  transform: translate3d(0, 100%, 0);
+}
+.slide-up-enter-to, .slide-up-leave {
+  transform: translate3d(0, 0, 0);
+}
+.slide-up-enter-active, .slide-up-leave-active {
+  transition: all .3s linear;
+}
+// 互斥关系的显示与隐藏
+// v-if="showTag === 0" @click="setTag(0)"
+// 
+
+@mixin box-shadow($shadow...) {
+  @if length($shadow) >= 1 {
+    @include prefixer(box-shadow, $shadow);
+  } @else{
+    $shadow:0 0 4px rgba(0,0,0,.3);
+    @include prefixer(box-shadow, $shadow);
+  }
+}
+// @mixin混合宏不足：不会自动合并相同的样式代码；继承可以：如@extend .btn;
+// 建议：如果你的代码块中涉及到变量，建议使用混合宏来创建相同的代码块。
+// 通过 @extend 调用的占位符，编译出来的代码会将相同的代码合并在一起。
+// 因为 %placeholder 声明的代码，如果不被 @extend 调用的话，不会产生任何代码
+%mt5 {
+  margin-top: 5px;
+}
+%pt5{
+  padding-top: 5px;
+}
+
+.btn {
+  @extend %mt5;
+  @extend %pt5;
+}
+// 使用 #{ }插值语句 (interpolation) 时，有引号字符串将被编译为无引号字符串，
+@mixin firefox-message($selector) {
+  body.firefox #{$selector}:before {
+    content: "Hi, Firefox users!";
+  }
+}
+@include firefox-message(".header");
+// 编译为：
+// body.firefox .header:before {
+//   content: "Hi, Firefox users!"; }
+$content-width: 100px;
+.box {
+  width: 10px * 2;
+  // width: $content-width + $sidebar-width + $gutter;// 变量计算
+}
+
+
+

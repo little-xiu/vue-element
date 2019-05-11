@@ -18,6 +18,10 @@ export default {
   .body {
     width: 1146px;
     margin: 0 auto;
+    height: 100%;
+  }
+  .home {
+    height: 100%;
   }
 </style>
 

@@ -1,5 +1,5 @@
 <template>
   <div class="problem-detail">
-    dfdfff
+    problem-detail
   </div>
 </template>

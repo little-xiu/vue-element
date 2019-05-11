@@ -26,6 +26,9 @@
           >
         </div>
         <span class="form-error">{{psdErr}}</span>
+        <div>
+
+        </div>
       </div>
       <el-button size="medium" :loading="loading" @click="onLogin">登陆</el-button>
     </div>
@@ -36,6 +39,7 @@
 import { mapGetters } from 'vuex';
 import { setTimeout } from 'timers';
 import http from '@/service/http';
+import * as api from '../service/info.api';
 export default {
   name: 'login',
   data() {
@@ -60,25 +64,38 @@ export default {
     }
   },
   methods: {
-    onLogin() {
+    async onLogin() {
       if (this.validForm()) {
         this.loading = true;
-        http.post('/tax/user/signin.do', {
+        const res = await api.getLogin({
           name: this.username,
           password: this.password,
-        }).then(res => {
-          const code = res.data.code;
-          this.loading = false;
-          this.$message.closeAll();
-          this.$message({
-            message: '登陆成功',
-            type: 'success',
-          });
-          localStorage.setItem('userinfo', JSON.stringify({ name: this.username, code, }));
-          this.$router.push('/');
-        }).catch(e => {
-          console.log(e);
         });
+        const code = res.data.code;
+        this.loading = false;
+        this.$message.closeAll();
+        this.$message({
+          message: '登陆成功',
+          type: 'success',
+        });
+        localStorage.setItem('userinfo', JSON.stringify({ name: this.username, code, }));
+        this.$router.push('/');
+        // http.post('/tax/user/signin.do', {
+        //   name: this.username,
+        //   password: this.password,
+        // }).then(res => {
+        //   const code = res.data.code;
+        //   this.loading = false;
+        //   this.$message.closeAll();
+        //   this.$message({
+        //     message: '登陆成功',
+        //     type: 'success',
+        //   });
+        //   localStorage.setItem('userinfo', JSON.stringify({ name: this.username, code, }));
+        //   this.$router.push('/');
+        // }).catch(e => {
+        //   console.log(e);
+        // });
       }
     },
     validForm() {
